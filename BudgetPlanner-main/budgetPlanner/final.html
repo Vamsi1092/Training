@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>total Budget is 1000</h1>
+   <h1 id="bal"></h1>
+    <div id="wrapper">
+        <table align='center' cellspacing=2 cellpadding=5 id="data_table" border=1>
+        <tr>
+        <th>Budget</th>
+        <th>Expenses</th>
+        <th>Balance</th>
+        </tr>
+        
+        <tr>
+        <td><input type="text" id="new_Budget"></td>
+        <td><input type="number" id="new_Expense"></td>
+        
+        <td><input type="button" class="add" onclick="add_row();" value="Add Row"></td>
+        </tr>
+        
+        </table>
+    </div>
+</body>
+<script>
+    var balance=1000;
+   var x=0;
+    function add_row()
+{
+
+ var new_Budget=document.getElementById("new_Budget").value;
+ var new_Expense=document.getElementById("new_Expense").value;
+      
+   if (balance>=new_Expense) 
+   {
+    
+
+
+ 
+	
+        var table=document.getElementById("data_table");
+        var table_len=(table.rows.length)-1;
+        console.log(table_len);
+        var row = table.insertRow(table_len).outerHTML="<tr id='row"+table_len+"'><td id='name_row"+table_len+"'>"+new_Budget+"</td><td id='expense_row"+table_len+"'>"+new_Expense+"</td><td><input type='button' id='edit_button"+table_len+"' value='Edit' class='edit' onclick='edit_row("+table_len+")'> <input type='button' id='save_button"+table_len+"' value='Save' class='save' onclick='save_row("+table_len+")'> <input type='button' value='Delete' class='delete' onclick='delete_row("+table_len+","+new_Expense+")'></td></tr>";
+
+        document.getElementById("new_Budget").value="";
+        document.getElementById("new_Expense").value="";
+        balance=balance-new_Expense;  
+        var m = document.getElementById("bal").innerHTML=" Left balance out of 1000:->"+balance;
+
+     } 
+     else
+     {
+        window.alert("out of budget");
+     }
+ 
+}
+function delete_row(no ,new_Expense)
+{
+ document.getElementById("row"+no+"").outerHTML="";
+ balance=balance+new_Expense;
+ var m = document.getElementById("bal").innerHTML=" Left balance ->"+balance;
+
+}
+
+function edit_row(no)
+{
+ document.getElementById("edit_button"+no).style.display="none";
+ document.getElementById("save_button"+no).style.display="block";
+	
+ var budget=document.getElementById("name_row"+no);
+ var expense=document.getElementById("expense_row"+no);
+  
+ var name_budget=budget.innerHTML;
+ var expense_data=expense.innerHTML;
+ var y = parseInt(expense_data);
+ balance=balance+y;
+	
+	
+ budget.innerHTML="<input type='text' id='budget_text"+no+"' value='"+name_budget+"'>";
+ expense.innerHTML="<input type='text' id='expense_text"+no+"' value='"+expense_data+"'>";
+
+}
+function save_row(no)
+{
+ var budget_val=document.getElementById("budget_text"+no).value;
+ var expense_val=document.getElementById("expense_text"+no).value;
+ 
+  balance=balance-expense_val;
+  var m = document.getElementById("bal").innerHTML=" Left balance ->"+balance;
+ document.getElementById("name_row"+no).innerHTML=budget_val;
+ document.getElementById("expense_row"+no).innerHTML=expense_val;
+ 
+
+ document.getElementById("edit_button"+no).style.display="block";
+ document.getElementById("save_button"+no).style.display="none";
+}
+
+</script>
